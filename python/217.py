@@ -1,47 +1,53 @@
-from typing import Optional
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+# Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
+#
+#
+#
+# Example 1:
+#
+# Input: nums = [1,2,3,1]
+#
+# Output: true
+#
+# Explanation:
+#
+# The element 1 occurs at the indices 0 and 3.
+#
+# Example 2:
+#
+# Input: nums = [1,2,3,4]
+#
+# Output: false
+#
+# Explanation:
+#
+# All elements are distinct.
+#
+# Example 3:
+#
+# Input: nums = [1,1,1,3,3,4,3,2,4,2]
+#
+# Output: true
+#
+#
+#
+# Constraints:
+#
+# 1 <= nums.length <= 105
+# -109 <= nums[i] <= 109
 
 
 class Solution:
-    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        dummy = ListNode(0, head)
-        groupPrev = dummy
-
-        while True:
-            kth = self.getKth(groupPrev, k)
-            if not kth:
-                break
-            groupNext = kth.next
-
-            # reverse in group
-            prev = kth.next
-            curr = groupPrev.next
-
-            while curr != groupNext:
-                next = curr.next
-                curr.next = prev
-                prev = curr
-                curr = next
-
-            tmp = groupPrev.next
-            groupPrev.next = kth
-            groupPrev = tmp
-
-        return dummy.next
-
-    def getKth(self, curr: Optional[ListNode], k: int):
-        while curr and k > 0:
-            curr = curr.next
-            k -= 1
-        return curr
+    def containsDuplicate(self, nums: list[int]) -> bool:
+        seen = set()
+        for n in nums:
+            if n in seen:
+                return True
+            seen.add(n)
+        return False
 
 
 if __name__ == "__main__":
     s = Solution()
-    s.reverseKGroup(ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5))))), 2)
-    s.reverseKGroup(ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5))))), 3)
+    print(s.containsDuplicate([1, 2, 3, 1]))
+    print(s.containsDuplicate([1, 2, 3, 4]))
+    print(s.containsDuplicate([1, 1, 1, 3, 3, 4, 3, 2, 4, 2]))
